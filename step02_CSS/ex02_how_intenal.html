@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* internal 방식은 style 태그 안에 작성 */
+        
+        h1 {
+            color: red;
+        }
+        
+        h1:nth-child(2) {
+            color: green;
+        }
+        
+        h1:nth-child(3) {
+            color: blue;
+        }
+        /* id에 적용 */
+        
+        #a {
+            font-style: italic;
+            border: 3px double blue;
+        }
+        /* class 적용 */
+        
+        .b {
+            font-size: 30px;
+            color: purple;
+        }
+        
+        .a {
+            background-color: yellow;
+        }
+        /* [여러 선택자 적용] */
+        /* 형제, 자식, 자손 선택자 별 우선순위 : 자식 > 자손 > 형제 */
+        /* 선택자 우선순위가 같으면 뒤에 작성된 선택자가 우선 적용됨 */
+        /* --- 자손 선택자 */
+        
+        div p {
+            color: brown;
+        }
+        /* --- 자식 선택자 */
+        
+        div>p {
+            color: pink;
+        }
+        /* --- 일반 형제 선택자 */
+        
+        div~p {
+            color: cyan;
+        }
+        /* --- 인접 형제 선택자 */
+        
+        div+p {
+            color: orange;
+        }
+        /* [속성 선택자] */
+        
+        form input[type="text"] {
+            background-color: lightgray;
+        }
+        /* 요소의 특별 상태를 나타내는 가상 클래스*/
+        
+        table {
+            width: 400px;
+            height: 400px;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        td {
+            border: 1px solid gray;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        tr:nth-child(odd) {
+            background-color: lightblue;
+        }
+        
+        tr:nth-child(1)>td:nth-child(2) {
+            color: green;
+        }
+        
+        td:nth-child(2) {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- internal 방식은 현재 문서 내에 스타일 태그 열어서 적용 -->
+    <h1>CSS 적용하기 1</h1>
+    <h1>CSS 적용하기 2</h1>
+    <h1>CSS 적용하기 3</h1>
+    <h2 id="a" class="b a">CSS 적용하기 4</h2>
+    <h2 class="b">CSS 적용하기 5</h2>
+
+    <div>
+        <p>
+            text1
+            <section>
+                <p>손자</p>
+            </section>
+        </p>
+        <p>text2</p>
+        <p>text3</p>
+        <p>text4</p>
+        <p>text5</p>
+        <p>text6</p>
+        <p>text7</p>
+        <p>text8</p>
+    </div>
+    <p>text9</p>
+    <p>text10</p>
+    <form>
+        <input type="text">
+        <input type="submit" value="제출">
+    </form>
+    <table>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
