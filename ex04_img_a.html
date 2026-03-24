@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .side-bar {
+        display: block;
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 5px 0 0 5px;
+        color: #333;
+    }
+    
+    .side-bar a {
+        display: block;
+        margin: 5px 0;
+        color: #333;
+        text-decoration: none;
+    }
+    
+    .side-bar a:hover {
+        background-color: #333;
+        color: #fff;
+    }
+</style>
+
+<body>
+    <h1>이미지</h1>
+    <!-- 랜덤 이미지 표시 -->
+    <img src="https://picsum.photos/200/300" alt="랜덤 이미지" style="display: block; margin: 0 auto;" />
+    <span style="display: block; text-align: center;">안녕하세요</span>
+    <hr>
+    <!-- 로컬 이미지 표시 -->
+    <!-- target은 href에 해당하는 주소가 열리는 창을 제어한다.
+        _blank: 새 창에서 열기
+        _self: 현재 창에서 열기 (기본값)
+        _parent: 부모 프레임에서 열기
+        _top: 전체 창에서 열기
+        이름 : 같은 이름을 가진 링크는 같은 창에서 열림
+    -->
+    <a href="img/b.jpg" target="_blank">
+        <img src="img/b.jpg" alt="송중기" style="display: block; margin: 0 auto; " />
+    </a>
+    <hr>
+    <a href="http://www.naver.com" target="_blank">네이버</a>
+    <a href="http://www.daum.net" target="_blank">다음</a>
+    <a href="http://www.google.com" target="_blank">구글</a>
+    <a href="http://www.kosta.or.kr" target="a">코스타</a>
+    <div class="side-bar">
+        <a href="#top">상단으로 이동</a>
+        <a href="#middle">중간으로 이동</a>
+        <a href="#bottom">하단으로 이동</a>
+    </div>
+    <iframe src="ex02_ol_ul.html" name="a" style="display: block; margin: 20px auto; width: 80%; height: 200px;"></iframe>
+    <h1 id="top">
+        여기는 상단
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+    </h1>
+    <h1 id="middle">
+        여기는 중간
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+    </h1>
+    <h1 id="bottom">
+        여기는 하단
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+        <h4>졸지맙시다</h4>
+    </h1>
+    <iframe src="ex03_table.html" name="b" style="display: block; margin: 20px auto; width: 80%; height: 200px;"></iframe>
+</body>
+
+</html>
