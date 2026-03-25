@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid Area 예제</title>
+    <style>
+        /* === 기본 설정 === */
+        /* 모든 요소의 크기 계산에 border, padding 포함 */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* 페이지 전체 기본 스타일 */
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background-color: #f4f6fb;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #212529;
+        }
+
+        /* 제목, 문단의 기본 위 여백 제거 */
+        h1,
+        h2,
+        p {
+            margin-top: 0;
+        }
+
+        /* 코드처럼 보이게 표시 */
+        code {
+            padding: 2px 6px;
+            background-color: #e9ecef;
+            border-radius: 6px;
+            font-size: 0.95em;
+        }
+
+        /* 전체 내용을 가운데로 모으는 박스 */
+        .main {
+            width: min(100%, 960px);
+            margin: 0 auto;
+        }
+
+        /* 각 예제를 감싸는 공통 영역 */
+        .section {
+            margin-bottom: 32px;
+            padding: 24px;
+            background-color: white;
+            border: 2px solid #d6dcef;
+            border-radius: 16px;
+        }
+
+        /* section 안 문단 스타일 */
+        .section p {
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        /* === 1. grid-template-areas 예제 === */
+        /* 영역 이름으로 레이아웃 배치 */
+        .area-grid {
+            display: grid;
+            grid-template-columns: 220px 1fr 1fr;
+            grid-template-areas:
+                "header header header"
+                "sidebar content content"
+                "sidebar gallery gallery"
+                "footer footer footer";
+            gap: 16px;
+        }
+
+        /* 각 영역 박스의 공통 디자인 */
+        .box {
+            min-height: 120px;
+            padding: 20px;
+            border-radius: 14px;
+            color: white;
+        }
+
+        .box h3 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .box p {
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        /* 아래 클래스들은 이름과 같은 grid-area에 연결됨 */
+        .header {
+            grid-area: header;
+            background-color: #ff6b6b;
+        }
+
+        .sidebar {
+            grid-area: sidebar;
+            background-color: #4dabf7;
+        }
+
+        .content {
+            grid-area: content;
+            background-color: #51cf66;
+        }
+
+        .gallery {
+            grid-area: gallery;
+            background-color: #845ef7;
+        }
+
+        .footer {
+            grid-area: footer;
+            background-color: #343a40;
+        }
+
+        /* === 2. hover 확장 예제 === */
+        /* 기본 3열 2행 그리드 */
+        .hover-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-rows: repeat(2, minmax(120px, 160px));
+            gap: 16px;
+            position: relative;
+        }
+
+        /* 카드 공통 스타일 */
+        .hover-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: end;
+            padding: 18px;
+            border-radius: 14px;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            transition: all 0.35s ease;
+            overflow: hidden;
+        }
+
+        .hover-item span {
+            display: block;
+            font-size: 14px;
+            font-weight: normal;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .card-a {
+            background-color: #ff8787;
+        }
+
+        .card-b {
+            background-color: #74c0fc;
+        }
+
+        .card-c {
+            background-color: #69db7c;
+        }
+
+        .card-d {
+            background-color: #ffd43b;
+            color: #343a40;
+        }
+
+        .card-d span {
+            color: #343a40;
+        }
+
+        .card-e {
+            background-color: #b197fc;
+        }
+
+        .card-f {
+            background-color: #38d9a9;
+        }
+
+        /* 한 카드에 마우스를 올리면 나머지 카드는 숨김 */
+        .hover-grid:has(.hover-item:hover) .hover-item:not(:hover) {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9);
+        }
+
+        /* hover된 카드는 그리드 전체 영역으로 확장 */
+        .hover-grid .hover-item:hover {
+            grid-area: 1 / 1 / -1 / -1;
+            z-index: 2;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+        }
+
+        .hover-grid .hover-item:hover span {
+            font-size: 16px;
+            max-width: 420px;
+        }
+
+        /* === 반응형 설정 === */
+        /* 태블릿 크기: 2열 배치 */
+        @media (max-width: 800px) {
+            .area-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-areas:
+                    "header header"
+                    "sidebar content"
+                    "gallery gallery"
+                    "footer footer";
+            }
+        }
+
+        /* 모바일 크기: 1열 배치 */
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .section {
+                padding: 18px;
+            }
+
+            .area-grid {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "header"
+                    "sidebar"
+                    "content"
+                    "gallery"
+                    "footer";
+            }
+
+            .hover-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-rows: repeat(3, 120px);
+            }
+
+            .hover-grid .hover-item:hover {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- === 전체 콘텐츠 영역 === -->
+    <div class="main">
+        <h1>CSS Grid Template Areas</h1>
+        <p>
+            이 예제는 <code>ex14_grid.html</code>을 바탕으로 새 파일을 만든 뒤,
+            <code>grid-template-areas</code>를 사용한 배치와 반응형 변화를 보여준다.
+        </p>
+
+        <!-- === 1. grid-template-areas 예제 === -->
+        <div class="section">
+            <h2>1. grid-template-areas 기본 예제</h2>
+            <p>
+                각 박스에 이름을 붙여 두면, 숫자 대신 영역 이름으로 레이아웃을 설계할 수 있다.
+                화면이 좁아지면 미디어 쿼리로 영역 배치를 다시 정의해 반응형으로 바뀐다.
+            </p>
+
+            <!-- 이름을 붙인 영역들을 화면에 배치 -->
+            <div class="area-grid">
+                <div class="box header">
+                    <h3>Header</h3>
+                    <p>상단 전체를 차지하는 헤더 영역</p>
+                </div>
+                <div class="box sidebar">
+                    <h3>Sidebar</h3>
+                    <p>왼쪽 메뉴나 카테고리 영역</p>
+                </div>
+                <div class="box content">
+                    <h3>Content</h3>
+                    <p>본문이 들어가는 메인 콘텐츠 영역</p>
+                </div>
+                <div class="box gallery">
+                    <h3>Gallery</h3>
+                    <p>이미지 목록이나 카드 묶음을 표현하는 영역</p>
+                </div>
+                <div class="box footer">
+                    <h3>Footer</h3>
+                    <p>하단 안내 문구나 링크를 담는 푸터 영역</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- === 2. hover 확장 예제 === -->
+        <div class="section">
+            <h2>2. Hover 시 전체 영역을 차지하는 Grid 예제</h2>
+            <p>
+                아래 카드에 마우스를 올리면 해당 카드가 그리드 전체를 덮고,
+                나머지 카드는 보이지 않게 된다. Grid 안에서 아이템이 확장되는 효과를 확인할 수 있다.
+            </p>
+
+            <!-- hover된 카드만 전체 영역으로 확장 -->
+            <div class="hover-grid">
+                <div class="hover-item card-a">
+                    A
+                    <span>마우스를 올리면 전체 영역으로 확대된다.</span>
+                </div>
+                <div class="hover-item card-b">
+                    B
+                    <span>다른 카드는 숨겨지고 현재 카드만 남는다.</span>
+                </div>
+                <div class="hover-item card-c">
+                    C
+                    <span><code>:hover</code>와 Grid 배치를 함께 사용한 예제</span>
+                </div>
+                <div class="hover-item card-d">
+                    D
+                    <span>작은 화면에서도 동일한 방식으로 동작한다.</span>
+                </div>
+                <div class="hover-item card-e">
+                    E
+                    <span>수업용 데모로 확장 효과를 확인하기 좋다.</span>
+                </div>
+                <div class="hover-item card-f">
+                    F
+                    <span>마우스를 떼면 다시 원래 그리드로 돌아온다.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
