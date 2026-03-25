@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>링크 꾸미기</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 48px 20px;
+            background: linear-gradient(135deg, #111111 0%, #2b2b2b 45%, #555555 100%);
+            font-family: "Segoe UI", sans-serif;
+            color: #111111;
+        }
+        
+        .card {
+            width: min(100%, 560px);
+            margin: 0 auto;
+            padding: 32px;
+            border-radius: 28px;
+            background-color: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            background-color: #111111;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        
+        .logo-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f5f5f5, #bdbdbd);
+            color: #111111;
+            font-size: 18px;
+        }
+        
+        h1 {
+            margin: 20px 0 8px;
+            font-size: 32px;
+        }
+        
+        p {
+            margin: 0 0 28px;
+            color: #525252;
+            line-height: 1.6;
+        }
+        
+        .link-list {
+            display: grid;
+            gap: 14px;
+        }
+        
+        .link-list a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border: 1px solid #d4d4d4;
+            border-radius: 18px;
+            background-color: #ffffff;
+            color: #111111;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+        
+        .link-list a::after {
+            content: "↗";
+            font-size: 18px;
+        }
+        
+        .link-list a:hover {
+            transform: translateY(-3px);
+            background-color: #f5f5f5;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="logo">
+            <span class="logo-mark">L</span> Link Hub
+        </div>
+        <h1>링크 예제</h1>
+        <p>기본 링크를 버튼처럼 보이게 꾸민 예제</p>
+
+        <div class="link-list">
+            <a href="http://www.naver.com" target="_blank">네이버</a>
+            <a href="http://www.daum.net" target="_blank">다음</a>
+            <a href="http://www.google.com" target="_blank">구글</a>
+            <a href="http://www.youtube.com" target="_blank">유튜브</a>
+        </div>
+    </div>
+</body>
+
+</html>
