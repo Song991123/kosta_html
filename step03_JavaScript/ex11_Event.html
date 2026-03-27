@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>이벤트 처리 예제</title>
+		<style>
+			body {
+				margin: 0;
+				padding: 30px 20px 260px;
+				background-color: #f6f8fc;
+				font-family: Arial, Helvetica, sans-serif;
+				color: #243041;
+				scrollbar-width: thin;
+				scrollbar-color: #7c8db5 #e9eef8;
+			}
+
+			html {
+				scrollbar-width: thin;
+				scrollbar-color: #7c8db5 #e9eef8;
+			}
+
+			/* 전체 페이지 스크롤바 */
+			html::-webkit-scrollbar,
+			body::-webkit-scrollbar {
+				width: 12px;
+			}
+
+			html::-webkit-scrollbar-track,
+			body::-webkit-scrollbar-track {
+				background: #e9eef8;
+				border-radius: 999px;
+			}
+
+			html::-webkit-scrollbar-thumb,
+			body::-webkit-scrollbar-thumb {
+				background: linear-gradient(180deg, #94a3b8, #64748b);
+				border-radius: 999px;
+				border: 2px solid #e9eef8;
+			}
+
+			html::-webkit-scrollbar-thumb:hover,
+			body::-webkit-scrollbar-thumb:hover {
+				background: linear-gradient(180deg, #64748b, #475569);
+			}
+
+			.wrap {
+				width: min(100%, 1080px);
+				margin: 0 auto;
+			}
+
+			.hero,
+			.card {
+				margin-bottom: 20px;
+				padding: 20px;
+				background-color: white;
+				border: 2px solid #dfe6f4;
+				border-radius: 18px;
+			}
+
+			.grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: 16px;
+			}
+
+			h1,
+			h2,
+			h3,
+			p {
+				margin-top: 0;
+			}
+
+			.desc,
+			.note {
+				color: #5f6b7a;
+			}
+
+			.badge {
+				display: inline-block;
+				padding: 4px 10px;
+				border-radius: 999px;
+				font-size: 12px;
+				font-weight: bold;
+			}
+
+			.kind-badge {
+				background-color: #e7f5ff;
+				color: #1864ab;
+			}
+
+			.type-badge {
+				background-color: #f3f0ff;
+				color: #6741d9;
+			}
+
+			.value-badge {
+				background-color: #e6fcf5;
+				color: #087f5b;
+			}
+
+			button {
+				padding: 10px 16px;
+				border: none;
+				border-radius: 10px;
+				background-color: #4263eb;
+				color: white;
+				cursor: pointer;
+				font-size: 14px;
+			}
+
+			pre {
+				margin: 12px 0;
+				padding: 14px;
+				background-color: #111827;
+				color: #f9fafb;
+				border-radius: 12px;
+				overflow-x: auto;
+				font-size: 13px;
+				line-height: 1.6;
+			}
+
+			code {
+				font-family: Consolas, "Courier New", monospace;
+			}
+
+			.result-box,
+			.log-box {
+				padding: 12px;
+				background-color: #f8fafc;
+				border: 1px solid #e2e8f0;
+				border-radius: 12px;
+			}
+
+			.result-row {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px;
+				align-items: center;
+			}
+
+			.result-label {
+				font-weight: bold;
+			}
+
+			#event-log {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				font-family: Consolas, "Courier New", monospace;
+				font-size: 13px;
+				color: #a7f3d0;
+			}
+
+			#event-log li {
+				padding: 6px 0;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+			}
+
+			#event-log li::before {
+				content: "> ";
+				color: #34d399;
+			}
+
+			.selector-list {
+				padding-left: 20px;
+				line-height: 1.8;
+			}
+
+			.find-demo {
+				margin-top: 16px;
+				padding: 14px;
+				background-color: #f8fafc;
+				border: 1px solid #e2e8f0;
+				border-radius: 12px;
+			}
+
+			.demo-target {
+				margin: 8px 0;
+				padding: 10px 12px;
+				border-radius: 10px;
+				background-color: #eef2ff;
+			}
+
+			.demo-target.active {
+				background-color: #dbeafe;
+				outline: 2px solid #60a5fa;
+			}
+
+			.find-buttons {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 10px;
+				margin: 14px 0;
+			}
+
+			.foreach-demo {
+				margin-top: 16px;
+				padding: 14px;
+				background-color: #f8fafc;
+				border: 1px solid #e2e8f0;
+				border-radius: 12px;
+			}
+
+			.foreach-demo-buttons {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 10px;
+				margin: 14px 0;
+			}
+
+			.console-panel {
+				position: fixed;
+				right: 20px;
+				bottom: 82px;
+				width: min(100%, 460px);
+				height: 260px;
+				z-index: 1000;
+				border-radius: 16px;
+				overflow: hidden;
+				background-color: rgba(15, 23, 42, 0.95);
+				box-shadow: 0 20px 40px rgba(15, 23, 42, 0.28);
+				backdrop-filter: blur(8px);
+				opacity: 0;
+				transform: translateY(16px) scale(0.98);
+				pointer-events: none;
+				transition:
+					opacity 0.22s ease,
+					transform 0.22s ease;
+			}
+
+			.console-panel.open {
+				opacity: 1;
+				transform: translateY(0) scale(1);
+				pointer-events: auto;
+			}
+
+			.console-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 10px 14px;
+				background-color: rgba(30, 41, 59, 0.95);
+				border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+			}
+
+			.console-dots {
+				display: flex;
+				gap: 6px;
+			}
+
+			.console-dots span {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+			}
+
+			.console-dots span:nth-child(1) {
+				background-color: #fb7185;
+			}
+
+			.console-dots span:nth-child(2) {
+				background-color: #facc15;
+			}
+
+			.console-dots span:nth-child(3) {
+				background-color: #4ade80;
+			}
+
+			.console-title {
+				color: #e2e8f0;
+				font-size: 13px;
+				font-weight: bold;
+			}
+
+			.console-actions {
+				display: flex;
+				gap: 8px;
+			}
+
+			.console-reset,
+			.console-close {
+				padding: 4px 10px;
+				border: 1px solid rgba(255, 255, 255, 0.12);
+				border-radius: 999px;
+				background-color: rgba(51, 65, 85, 0.9);
+				color: #e2e8f0;
+				font-size: 12px;
+			}
+
+			.console-reset {
+				background-color: rgba(3, 105, 161, 0.9);
+			}
+
+			.console-body {
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+				box-sizing: border-box;
+				height: calc(100% - 45px);
+				padding: 14px 16px 16px;
+			}
+
+			.console-note {
+				margin-bottom: 0;
+				color: #94a3b8;
+				font-size: 12px;
+			}
+
+			.log-box.console-log {
+				flex: 1;
+				height: auto;
+				overflow-y: auto;
+				padding: 12px 14px;
+				background-color: rgba(2, 6, 23, 0.95);
+				border: 1px solid rgba(148, 163, 184, 0.15);
+				border-radius: 14px;
+				scrollbar-width: thin;
+				scrollbar-color: #34d399 rgba(15, 23, 42, 0.9);
+			}
+
+			/* 콘솔 전용 스크롤바 */
+			.log-box.console-log::-webkit-scrollbar {
+				width: 10px;
+			}
+
+			.log-box.console-log::-webkit-scrollbar-track {
+				background: rgba(15, 23, 42, 0.9);
+				border-radius: 999px;
+			}
+
+			.log-box.console-log::-webkit-scrollbar-thumb {
+				background: linear-gradient(180deg, #34d399, #059669);
+				border-radius: 999px;
+				border: 2px solid rgba(15, 23, 42, 0.9);
+			}
+
+			.log-box.console-log::-webkit-scrollbar-thumb:hover {
+				background: linear-gradient(180deg, #6ee7b7, #10b981);
+			}
+
+			.console-launcher {
+				position: fixed;
+				right: 20px;
+				bottom: 20px;
+				z-index: 1001;
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+				padding: 12px 16px;
+				border-radius: 999px;
+				background-color: rgba(15, 23, 42, 0.96);
+				color: #e2e8f0;
+				box-shadow: 0 14px 28px rgba(15, 23, 42, 0.24);
+				backdrop-filter: blur(8px);
+				cursor: pointer;
+				user-select: none;
+			}
+
+			.console-launcher-title {
+				font-size: 13px;
+				font-weight: bold;
+			}
+
+			.console-counter {
+				min-width: 24px;
+				padding: 4px 8px;
+				border-radius: 999px;
+				background: linear-gradient(180deg, #fb7185, #e11d48);
+				color: white;
+				font-size: 12px;
+				font-weight: bold;
+				text-align: center;
+				box-sizing: border-box;
+			}
+
+			.console-counter.empty {
+				background: linear-gradient(180deg, #475569, #334155);
+			}
+
+			@media (max-width: 700px) {
+				body {
+					padding-bottom: 290px;
+				}
+
+				.console-panel {
+					left: 12px;
+					right: 12px;
+					bottom: 68px;
+					width: auto;
+					height: 240px;
+				}
+
+				.console-launcher {
+					right: 12px;
+					bottom: 12px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="hero">
+				<h1>이벤트 처리하기</h1>
+				<p>
+					이벤트는 클릭, 입력, 마우스 올리기처럼 사용자 행동이 일어났을 때 실행되는
+					기능임.
+				</p>
+				<p class="desc">
+					이 페이지는 이벤트 등록 방법과 요소 찾는 방법을 같이 보여주는 예제임.
+				</p>
+			</div>
+
+			<div class="grid">
+				<div class="card">
+					<h2>1. 태그에 바로 등록</h2>
+					<p class="note">HTML 태그에 <code>onclick</code>을 직접 적는 방식임.</p>
+					<p class="note">빠르게 테스트할 때는 편함. 하지만 HTML과 JS가 섞임.</p>
+					<p><span class="badge kind-badge">inline event</span></p>
+					<button onclick="showInlineEvent()">클릭 1</button>
+					<pre><code>&lt;button onclick="showInlineEvent()"&gt;클릭 1&lt;/button&gt;</code></pre>
+					<div class="result-box">
+						<h3>언제 씀</h3>
+						<div class="result-row">
+							<span class="badge value-badge">간단한 테스트</span>
+							<span class="badge type-badge">초기 학습</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<h2>2. JS에서 on이벤트명 등록</h2>
+					<p class="note"><code>element.onclick = 함수</code> 형태로 등록하는 방식임.</p>
+					<p class="note">한 요소에 간단히 연결할 때 씀. 같은 이벤트를 덮어쓸 수 있음.</p>
+					<p><span class="badge kind-badge">property event</span></p>
+					<button id="btn-property">클릭 2</button>
+					<pre><code>const btn = document.getElementById("btn-property");
+btn.onclick = function () {
+	addLog("property 방식 실행");
+};</code></pre>
+					<div class="result-box">
+						<h3>언제 씀</h3>
+						<div class="result-row">
+							<span class="badge value-badge">빠른 연결</span>
+							<span class="badge type-badge">덮어쓰기 가능</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<h2>3. addEventListener 등록</h2>
+					<p class="note"><code>addEventListener()</code>는 가장 많이 쓰는 방식임.</p>
+					<p class="note">이벤트를 여러 개 붙이기 좋고, 유지보수도 편함.</p>
+					<p><span class="badge kind-badge">addEventListener</span></p>
+					<button id="btn-listener">클릭 3</button>
+					<pre><code>const btn = document.getElementById("btn-listener");
+btn.addEventListener("click", function () {
+	addLog("listener 방식 실행");
+});</code></pre>
+					<div class="result-box">
+						<h3>언제 씀</h3>
+						<div class="result-row">
+							<span class="badge value-badge">실무에서 자주 씀</span>
+							<span class="badge type-badge">여러 이벤트 등록 가능</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<h2>4. event 객체 사용</h2>
+					<p class="note">이벤트가 일어났을 때 어떤 요소인지 알고 싶을 때 씀.</p>
+					<p class="note">클릭한 대상, 타입 같은 정보를 확인할 수 있음.</p>
+					<p><span class="badge kind-badge">event object</span></p>
+					<button id="btn-event">클릭 4</button>
+					<pre><code>btn.addEventListener("click", function (event) {
+	console.log(event.target);
+	console.log(event.type);
+});</code></pre>
+					<div id="event-result" class="result-box">
+						<h3>실행 결과</h3>
+						<p class="note">아직 클릭 전임.</p>
+					</div>
+				</div>
+
+				<div class="card">
+					<h2>5. window.onload</h2>
+					<p class="note">
+						<code>window.onload</code>는 화면 준비가 끝난 뒤 실행되는 함수임.
+					</p>
+					<p class="note">이미지, CSS, HTML까지 다 읽고 나서 시작하고 싶을 때 씀.</p>
+					<p><span class="badge kind-badge">page load event</span></p>
+					<pre><code>window.onload = function () {
+	addLog("페이지 준비 완료");
+};</code></pre>
+					<div id="load-result" class="result-box">
+						<h3>실행 결과</h3>
+						<p class="note">아직 로드 전 상태 설명 영역임.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<h2>6. body 안 요소 찾는 방법</h2>
+				<p class="note">이벤트를 등록하려면 먼저 요소를 찾아야 함.</p>
+				<ul class="selector-list">
+					<li><code>document.getElementById("id명")</code> : id 하나 찾을 때 씀.</li>
+					<li>
+						<code>document.getElementsByClassName("class명")</code> : class 여러 개 찾을
+						때 씀.
+					</li>
+					<li>
+						<code>document.getElementsByTagName("태그명")</code> : 태그 이름으로 찾을 때
+						씀.
+					</li>
+					<li>
+						<code>document.querySelector("css선택자")</code> : 첫 번째 요소 하나 찾을 때
+						씀.
+					</li>
+					<li>
+						<code>document.querySelectorAll("css선택자")</code> : 조건에 맞는 요소를
+						전부 찾을 때 씀.
+					</li>
+				</ul>
+
+				<div class="find-demo">
+					<h3>직접 해보는 요소 찾기 예제</h3>
+					<p class="note">버튼을 누르면 해당 선택자로 찾은 요소를 강조 표시함.</p>
+
+					<div class="demo-target" id="demo-id">id가 있는 요소</div>
+					<div class="demo-target demo-class">class가 있는 요소 1</div>
+					<div class="demo-target demo-class">class가 있는 요소 2</div>
+					<div class="demo-target demo-class name">class가 있는 요소 3 (이름)</div>
+					<div class="demo-target demo-class name">class가 있는 요소 4 (이름)</div>
+					<p class="demo-target demo-tag">p 태그 예제</p>
+					<p class="demo-target demo-tag">p 태그 예제 2</p>
+
+					<div class="find-buttons">
+						<button onclick="findByIdExample()">getElementById</button>
+						<button onclick="findByClassExample()">getElementsByClassName</button>
+						<button onclick="findByTagExample()">getElementsByTagName</button>
+						<button onclick="findByQuerySelectorExample()">querySelector</button>
+						<button onclick="findByQuerySelectorAllExample()">querySelectorAll</button>
+					</div>
+
+					<div id="find-result" class="result-box">
+						<h3>실행 결과</h3>
+						<p class="note">아직 선택 전임.</p>
+					</div>
+				</div>
+
+				<div class="foreach-demo">
+					<h3>querySelectorAll + forEach 예제</h3>
+					<p class="note">
+						<code>document.querySelectorAll("button")</code>은 버튼들을 전부 찾음.
+					</p>
+					<p class="note"><code>forEach</code>는 찾은 요소를 하나씩 꺼내서 반복함.</p>
+					<p class="note">
+						<code>ele</code>는 현재 버튼 요소임. <code>index</code>는 순서 번호임.
+					</p>
+					<p class="note">
+						같은 자리에서 <code>mouseover</code>, <code>mouseout</code> 이벤트도 같이
+						등록할 수 있음.
+					</p>
+
+					<pre><code>document.querySelectorAll(".foreach-demo-buttons button").forEach(function (ele, index) {
+	ele.innerText = "버튼 " + (index + 1);
+	ele.style.backgroundColor = "#0ea5e9";
+
+	ele.addEventListener("mouseover", function () {
+		ele.style.transform = "translateY(-3px)";
+	});
+
+	ele.addEventListener("mouseout", function () {
+		ele.style.transform = "translateY(0)";
+	});
+});</code></pre>
+
+					<div class="foreach-demo-buttons">
+						<button class="sample-foreach-btn">샘플 버튼 A</button>
+						<button class="sample-foreach-btn">샘플 버튼 B</button>
+						<button class="sample-foreach-btn">샘플 버튼 C</button>
+					</div>
+
+					<div class="find-buttons">
+						<button onclick="runForEachButtonExample()">forEach 예제 실행</button>
+					</div>
+
+					<div id="foreach-result" class="result-box">
+						<h3>실행 결과</h3>
+						<p class="note">아직 실행 전임.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="console-panel" id="console-panel">
+			<div class="console-header">
+				<div class="console-dots">
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+				<div class="console-title">실행 로그 콘솔</div>
+				<div class="console-actions">
+					<button class="console-reset" type="button" onclick="clearConsoleLog()">
+						로그 리셋
+					</button>
+					<button class="console-close" type="button" onclick="closeConsole()">
+						닫기
+					</button>
+				</div>
+			</div>
+			<div class="console-body">
+				<p class="console-note">어디서든 보이게 하단 고정됨. 이벤트 실행 순서가 쌓임.</p>
+				<div class="log-box console-log">
+					<ol id="event-log"></ol>
+				</div>
+			</div>
+		</div>
+
+		<div class="console-launcher" onclick="toggleConsole()">
+			<span class="console-launcher-title">실행 로그</span>
+			<span class="console-counter empty" id="console-counter">0</span>
+		</div>
+
+		<script>
+			/* === 공통 함수 === */
+
+			const eventLog = document.getElementById("event-log");
+			const eventResult = document.getElementById("event-result");
+			const loadResult = document.getElementById("load-result");
+			const findResult = document.getElementById("find-result");
+			const foreachResult = document.getElementById("foreach-result");
+			const consolePanel = document.getElementById("console-panel");
+			const consoleCounter = document.getElementById("console-counter");
+			let unreadLogCount = 0;
+			let isConsoleOpen = false;
+
+			function addLog(text) {
+				const li = document.createElement("li");
+				li.innerText = text;
+				eventLog.appendChild(li);
+
+				if (!isConsoleOpen) {
+					unreadLogCount += 1;
+					updateConsoleCounter();
+				}
+			}
+
+			function updateConsoleCounter() {
+				consoleCounter.innerText = unreadLogCount;
+
+				if (unreadLogCount > 0) {
+					consoleCounter.classList.remove("empty");
+				} else {
+					consoleCounter.classList.add("empty");
+				}
+			}
+
+			function openConsole() {
+				isConsoleOpen = true;
+				unreadLogCount = 0;
+				updateConsoleCounter();
+				consolePanel.classList.add("open");
+			}
+
+			function closeConsole() {
+				isConsoleOpen = false;
+				consolePanel.classList.remove("open");
+			}
+
+			function clearConsoleLog() {
+				eventLog.innerHTML = "";
+				unreadLogCount = 0;
+				updateConsoleCounter();
+				addLog("로그 리셋: 콘솔 내용을 비움.");
+			}
+
+			function toggleConsole() {
+				if (isConsoleOpen) {
+					closeConsole();
+				} else {
+					openConsole();
+				}
+			}
+
+			function renderEventResult(label, value, type) {
+				eventResult.innerHTML = `
+					<h3>실행 결과</h3>
+					<div class="result-row">
+						<span class="result-label">${label}</span>
+						<span class="badge value-badge">값: ${value}</span>
+						<span class="badge type-badge">type: ${type}</span>
+					</div>
+				`;
+			}
+
+			function renderLoadResult() {
+				loadResult.innerHTML = `
+					<h3>실행 결과</h3>
+					<div class="result-row">
+						<span class="result-label">window.onload</span>
+						<span class="badge value-badge">값: 페이지 준비 완료</span>
+						<span class="badge type-badge">type: string</span>
+					</div>
+				`;
+			}
+
+			function clearDemoTargetActive() {
+				const targets = document.querySelectorAll(".demo-target");
+
+				targets.forEach(function (target) {
+					target.classList.remove("active");
+				});
+			}
+
+			function renderFindResult(label, value, type) {
+				findResult.innerHTML = `
+					<h3>실행 결과</h3>
+					<div class="result-row">
+						<span class="result-label">${label}</span>
+						<span class="badge value-badge">값: ${value}</span>
+						<span class="badge type-badge">type: ${type}</span>
+					</div>
+				`;
+			}
+
+			function renderForEachResult(label, value, type) {
+				foreachResult.innerHTML = `
+					<h3>실행 결과</h3>
+					<div class="result-row">
+						<span class="result-label">${label}</span>
+						<span class="badge value-badge">값: ${value}</span>
+						<span class="badge type-badge">type: ${type}</span>
+					</div>
+				`;
+			}
+
+			/* === 1. 태그에 직접 등록한 함수 === */
+
+			function showInlineEvent() {
+				addLog("클릭 1: inline 이벤트 실행됨.");
+			}
+
+			/* === 2. JS에서 property 방식 등록 === */
+
+			const btnProperty = document.getElementById("btn-property");
+			btnProperty.onclick = function () {
+				addLog("클릭 2: onclick property 방식 실행됨.");
+			};
+
+			/* === 3. addEventListener 방식 등록 === */
+
+			const btnListener = document.getElementById("btn-listener");
+			btnListener.addEventListener("click", function () {
+				addLog("클릭 3: addEventListener 방식 실행됨.");
+			});
+
+			/* === 4. event 객체 사용 === */
+
+			const btnEvent = document.getElementById("btn-event");
+			btnEvent.addEventListener("click", function (event) {
+				addLog("클릭 4: event 객체 정보 확인함.");
+				renderEventResult("event.type", event.type, typeof event.type);
+			});
+
+			/* === 5. window.onload === */
+
+			window.onload = function () {
+				addLog("window.onload: HTML, CSS, 이미지 준비가 끝남.");
+				renderLoadResult();
+			};
+
+			/* === 6. 요소 찾기 예제 === */
+
+			function findByIdExample() {
+				clearDemoTargetActive();
+				const target = document.getElementById("demo-id");
+				target.classList.add("active");
+				addLog("getElementById: id 요소 1개 찾음.");
+				renderFindResult("getElementById", target.innerText, "HTMLElement");
+			}
+
+			function findByClassExample() {
+				clearDemoTargetActive();
+				const targets = document.getElementsByClassName("name");
+
+				for (const target of targets) {
+					target.classList.add("active");
+				}
+
+				addLog("getElementsByClassName: class 요소 여러 개 찾음.");
+				renderFindResult(
+					"getElementsByClassName",
+					targets.length + "개 찾음",
+					"HTMLCollection",
+				);
+			}
+
+			function findByTagExample() {
+				clearDemoTargetActive();
+				const targets = document.getElementsByTagName("p");
+
+				for (const target of targets) {
+					if (target.classList.contains("demo-tag")) {
+						target.classList.add("active");
+					}
+				}
+
+				addLog("getElementsByTagName: p 태그 찾음.");
+				renderFindResult(
+					"getElementsByTagName",
+					"p 태그 " + targets.length + "개",
+					"HTMLCollection",
+				);
+			}
+
+			function findByQuerySelectorExample() {
+				clearDemoTargetActive();
+				const target = document.querySelector(".demo-class");
+				target.classList.add("active");
+				addLog("querySelector: 첫 번째 .demo-class 찾음.");
+				renderFindResult("querySelector", target.innerText, "Element");
+			}
+
+			function findByQuerySelectorAllExample() {
+				clearDemoTargetActive();
+				const targets = document.querySelectorAll(".demo-class");
+
+				targets.forEach(function (target) {
+					target.classList.add("active");
+				});
+
+				addLog("querySelectorAll: 조건에 맞는 요소 전부 찾음.");
+				renderFindResult("querySelectorAll", targets.length + "개 찾음", "NodeList");
+			}
+
+			function runForEachButtonExample() {
+				const buttons = document.querySelectorAll(".foreach-demo-buttons button");
+
+				buttons.forEach(function (ele, index) {
+					ele.innerText = "버튼 " + (index + 1);
+					ele.style.backgroundColor = "#0ea5e9";
+					ele.style.transition = "transform 0.2s ease, background-color 0.2s ease";
+
+					ele.onmouseover = function () {
+						ele.style.transform = "translateY(-3px)";
+						ele.style.backgroundColor = "#0284c7";
+						addLog("mouseover: 버튼 " + (index + 1) + " 위에 마우스를 올림.");
+					};
+
+					ele.onmouseout = function () {
+						ele.style.transform = "translateY(0)";
+						ele.style.backgroundColor = "#0ea5e9";
+						addLog("mouseout: 버튼 " + (index + 1) + " 에서 마우스가 나감.");
+					};
+				});
+
+				addLog("querySelectorAll + forEach: 버튼들을 순서대로 변경함.");
+				renderForEachResult("forEach", buttons.length + "개 버튼 처리함", "NodeList");
+			}
+		</script>
+	</body>
+</html>
