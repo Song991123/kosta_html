@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body></body>
+	<script>
+		const students = [
+			{ name: "A", age: 20, state: true, score: 80 },
+			{ name: "B", age: 29, state: true, score: 85 },
+			{ name: "C", age: 22, state: false, score: 90 },
+			{ name: "D", age: 21, state: true, score: 45 },
+			{ name: "E", age: 28, state: false, score: 95 },
+		];
+		//1. 점수가 90점인 학생 정보 - find()
+		let re = students.find((student) => student.score === 90);
+		console.log(re);
+
+		//2. 점수가 90점인 이상인 모든 학생 - filter()
+		re = students.filter((student) => student.score >= 90);
+		console.log(re);
+
+		//3. 수강중(state-true) 학생들만 골라서 배열로 만들기. - filter()
+		re = students.filter((student) => student.state === true);
+		console.log(re);
+
+		//4.학생 배열에서 점수만 뽑아서 배열로 만들기 - map()
+		re = students.map((student) => student.score);
+		console.log(re);
+
+		//5.학생 들중에 점수가 50점 보다 낮은 친구 있는지 없는지 체크하기-some()
+		re = students.some((student) => student.score < 50);
+		console.log(re);
+
+		//6. 모든 학생들의 점수가 80이상인지 체크 -every()
+		re = students.every((student) => student.score >= 80);
+		console.log(re);
+
+		//7.학생들의 평균점수를 구하기 - reduce()
+		// 구성 : 콜백함수, 초기값
+		// reduce는 배열의 각 요소에 대해 콜백 함수를 실행하여 단일 값으로 줄이는 데 사용됩니다.
+		// 콜백 함수는 누적기(accumulator)와 현재 요소(currentValue)를 인자로 받습니다. 초기값은 누적기의 초기값을 설정하는 데 사용됩니다.
+		// 예시: 배열의 합을 구하는 경우
+		// const numbers = [1, 2, 3, 4];
+		// const sum = numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+		// return이 없는 경우에는 undefined가 반환되므로, reduce의 콜백 함수에서는 반드시 값을 반환해야 합니다.
+		// 그 이유는 reduce는 누적기(accumulator)를 업데이트하기 위해 콜백 함수의 반환값을 사용하기 때문입니다.
+		re = students.reduce((acc, student) => acc + student.score, 0) / students.length;
+		console.log(re);
+
+		//8. 학생들의 모든 점수를 구해서 하나의 string으로 변환(map , join)
+		re = students.map((student) => student.score).join(" | ");
+		console.log(re);
+
+		//9.학생들의 모든 점수를 배열로 만들어서 50점 이상인 학생들만 뽑아서 하나의 string으로 변환 (map, filter, join)
+		re = students
+			.map((student) => student.score)
+			.filter((score) => score >= 50)
+			.join(" | ");
+		console.log(re);
+
+		//10.학생들의 점수를 정렬하기. - sort()
+		re = students.sort((a, b) => a.score - b.score);
+		console.log(re);
+		re = students.toSorted((a, b) => a.score - b.score);
+		console.log(re);
+	</script>
+</html>

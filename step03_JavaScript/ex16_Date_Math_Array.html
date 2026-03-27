@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Date, Math, Array 객체 알아보기</title>
+	</head>
+	<body></body>
+	<script>
+		// 날짜 생성 ////////////////
+		const today = new Date(2025, 9, 3, 14, 2, 30);
+		console.log(today);
+		// 날짜 정보 가져오기
+		console.log(today.getFullYear()); // 년도
+		console.log(today.getMonth()); // 월 (0부터 시작)
+		console.log(today.getDate()); // 일
+		console.log(today.getHours()); // 시
+		console.log(today.getMinutes()); // 분
+		console.log(today.getSeconds()); // 초
+
+		// 난수 발생 /////////////////
+		console.log(Math.random()); // 0 이상 1 미만의 난수
+		console.log(parseInt(Math.random() * 10 + 1)); // 1부터 10까지의 난수
+
+		// 배열 생성 ////////////////
+		const arr1 = [];
+		const arr2 = new Array(1, true, "졸립다");
+		const arr3 = new Array(5); // 길이가 5인 배열 생성 (값은 undefined)
+
+		const arr4 = [
+			[1, 2, 3],
+			[4, 5, 6],
+		]; // 2차원 배열 생성
+
+		// 배열 요소로 객체와 함수도 가능
+		const arr5 = [
+			{ name: "홍길동", age: 30 },
+			function () {
+				console.log("함수도 배열 요소가 될 수 있다.");
+			},
+		];
+
+		console.log(arr1);
+		console.log(arr2);
+		console.log(arr3);
+		console.log(arr4);
+		console.log(arr5);
+	</script>
+</html>

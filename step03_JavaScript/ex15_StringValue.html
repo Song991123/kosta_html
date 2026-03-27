@@ -18,7 +18,7 @@
 				<input type="text" size="7" name="jumin2" /><span></span>
 				<p>
 					성별 :
-					<input type="radio" name="gender" value="남자" />남자
+					<input type="radio" name="gender" value="남자" checked />남자
 					<input type="radio" name="gender" value="여자" />여자
 				</p>
 			</fieldset>
@@ -53,19 +53,56 @@
 			///////////////////////////
 			// 나이에 숫자 유무 체크
 			document.querySelector('input[name="age"]').addEventListener("blur", function () {
-				if (!numberCheck(event.target.value)) {
-					alert("숫자만 입력 가능합니다.");
-					event.target.value = "";
+				numberCheck(event.target);
+			});
+
+			const numberCheck = (objEle) => {
+				if (isNaN(objEle.value)) {
+					// 메시지 출력(인접해 있는 span 태그에 메시지 출력)
+					objEle.nextElementSibling.innerHTML =
+						"<strong style='color:red;'>숫자만 입력 가능합니다.</strong>";
+					objEle.focus();
+					objEle.value = "";
+					return false;
+				} else {
+					objEle.nextElementSibling.innerHTML = "";
+					return true;
+				}
+			};
+
+			//주민번호 앞자리가 6자리가 되면 커서 이동///////////////////////
+			document.querySelector('input[name="jumin1"]').addEventListener("keyup", function () {
+				// 입력 값이 문자이면 마지막 문자를 지움
+				if (isNaN(event.target.value)) {
+					event.target.value = event.target.value.slice(0, -1);
+					return;
+				}
+
+				if (event.target.value.length === 6) {
+					event.target.nextElementSibling.focus();
 				}
 			});
 
-			const numberCheck = (value) => {
-				if (isNaN(value)) {
-					// 메시지 출력(인접해 있는 span 태그에 메시지 출력)
-					return false;
-				}
-				return true;
-			};
+			////////// 주민번호 뒷자리 입력 후 숫자 체크 + 성별 체크 ///////////////////////
+			document.querySelector('input[name="jumin2"]').addEventListener(
+				"blur",
+				function () {
+					let result = numberCheck(event.target);
+
+					// 성별 체크
+					if (!result) {
+						let ch = event.target.value.charAt(0);
+
+						let genderEles = document.querySelectorAll("[name=gender]");
+						if (ch === "1") {
+							genderEles[0].checked = true;
+						} else {
+							genderEles[1].checked = true;
+						}
+					}
+				},
+				false,
+			);
 		</script>
 	</body>
 </html>
