@@ -1,0 +1,12 @@
+.report-card-table {
+	margin: auto;
+	text-align: center;
+	border-collapse: collapse;
+	border: 5px double red;
+}
+.report-card-table th,
+.report-card-table td {
+	width: 100px;
+	border: 1px solid #000;
+	padding: 8px;
+}

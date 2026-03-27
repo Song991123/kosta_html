@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 30px 20px;
+            background-color: #f6f8fc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        .wrap {
+            width: min(100%, 960px);
+            margin: 0 auto;
+        }
+        
+        .card {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid #e1e7f4;
+            border-radius: 16px;
+        }
+        
+        .section {
+            margin-top: 16px;
+            padding: 16px;
+            background-color: #fbfcff;
+            border: 1px solid #dbe4f3;
+            border-radius: 12px;
+        }
+        
+        h1,
+        h2 {
+            margin-top: 0;
+        }
+        
+        .desc {
+            color: #5c6678;
+        }
+        
+        .section-desc {
+            margin-bottom: 10px;
+            color: #66748a;
+            font-size: 14px;
+        }
+        
+        p {
+            margin: 6px 0;
+            color: #2f3a4d;
+        }
+        
+        .result-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        
+        .result-label {
+            font-weight: bold;
+            color: #334155;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        
+        .value-badge {
+            background-color: #e7f5ff;
+            color: #1864ab;
+        }
+        
+        .type-badge {
+            background-color: #f3f0ff;
+            color: #6741d9;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 10px;
+            background-color: #4263eb;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        #window-result {
+            margin-top: 14px;
+        }
+        
+        code {
+            padding: 2px 6px;
+            background-color: #eef2ff;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>연산자 예제</h1>
+        <p class="desc">형변환 내용을 항목별로 짧게 나눠서 보여주는 예제임.</p>
+
+        <div class="section">
+            <h2>window 주요 함수 예제</h2>
+            <p class="section-desc">메세지 출력, 물어보기, 입력받기를 버튼으로 테스트하는 예제임.</p>
+
+            <div class="button-group">
+                <button onclick="showAlertExample()">1. 메세지 출력</button>
+                <button onclick="showConfirmExample()">2. 의사 물어보기</button>
+                <button onclick="showPromptExample()">3. 입력값 받기</button>
+            </div>
+
+            <div id="window-result"></div>
+        </div>
+
+        <div id="result-area"></div>
+    </div>
+</body>
+<script>
+    const resultArea = document.getElementById("result-area");
+    const windowResult = document.getElementById("window-result");
+
+    function addSection(title, desc, lines) {
+        const section = document.createElement("div");
+        section.className = "section";
+
+        const heading = document.createElement("h2");
+        heading.innerText = title;
+        section.appendChild(heading);
+
+        const descText = document.createElement("p");
+        descText.className = "section-desc";
+        descText.innerText = desc;
+        section.appendChild(descText);
+
+        for (let i = 0; i < lines.length; i++) {
+            if (typeof lines[i] === "string") {
+                const p = document.createElement("p");
+                p.innerHTML = lines[i];
+                section.appendChild(p);
+                continue;
+            }
+
+            const row = document.createElement("div");
+            row.className = "result-row";
+            row.innerHTML =
+                `<span class="result-label">${lines[i].label}</span>` +
+                `<span class="badge value-badge">값: ${formatValue(lines[i].value)}</span>` +
+                `<span class="badge type-badge">type: ${typeof lines[i].value}</span>`;
+            section.appendChild(row);
+        }
+
+        resultArea.appendChild(section);
+    }
+
+    function formatValue(value) {
+        if (typeof value === "string") {
+            return `"${value}"`;
+        }
+
+        return String(value);
+    }
+
+    function showWindowResult(label, value) {
+        windowResult.innerHTML =
+            `<div class="result-row">` +
+            `<span class="result-label">${label}</span>` +
+            `<span class="badge value-badge">값: ${formatValue(value)}</span>` +
+            `<span class="badge type-badge">type: ${typeof value}</span>` +
+            `</div>`;
+    }
+
+    function showAlertExample() {
+        // alert는 메세지를 보여주는 함수임.
+        alert("안녕하세요! 자바스크립트 연산자 예제입니다.");
+        showWindowResult("alert()", "메세지 창을 띄웠음");
+    }
+
+    function showConfirmExample() {
+        // confirm은 확인/취소를 물어보는 함수임.
+        const answer = confirm("자바스크립트를 좋아하나요?");
+        showWindowResult("confirm()", answer);
+    }
+
+    function showPromptExample() {
+        // prompt는 사용자에게 글자를 입력받는 함수임.
+        const inputValue = prompt("좋아하는 과일 이름은?", "사과");
+        showWindowResult("prompt()", inputValue);
+    }
+
+    // 템플릿 문자열 이용해서 출력 - ``
+
+    let name = "홍길동";
+    let age = 20;
+    addSection(
+        "1. 템플릿 문자열",
+        "백틱(``)을 쓰면 문장을 쉽게 만들 수 있음.", [{
+            label: "name",
+            value: name
+        }, {
+            label: "age",
+            value: age
+        }, {
+            label: "문장 결과",
+            value: `이름: ${name}, 나이: ${age}`
+        }]
+    );
+
+    // 비교 연산자
+    let a = 10;
+    let b = "10";
+    addSection(
+        "2. 비교 연산자",
+        "== 는 값만 비교함. === 는 값과 자료형을 같이 비교함.", [{
+            label: "a",
+            value: a
+        }, {
+            label: "b",
+            value: b
+        }, {
+            label: "a == b",
+            value: a == b
+        }, {
+            label: "a === b",
+            value: a === b
+        }]
+    );
+
+    // 형 변환
+    /*
+    형변환은 자료형을 다른 모양으로 바꾸는 것임.
+    아래는 자주 쓰는 것만 분류해서 정리한 예제임.
+    */
+
+    addSection(
+        "3. 문자열 -> 숫자",
+        "문자로 된 숫자를 진짜 숫자로 바꾸는 방법임.", [{
+            label: 'parseInt("10.9")',
+            value: parseInt("10.9")
+        }, {
+            label: 'parseFloat("10.9")',
+            value: parseFloat("10.9")
+        }, {
+            label: 'Number("10")',
+            value: Number("10")
+        }, {
+            label: '+"7"',
+            value: +"7"
+        }, {
+            label: '"6" * 2',
+            value: "6" * 2
+        }]
+    );
+
+    addSection(
+        "4. 숫자 -> 문자열",
+        "숫자를 글자로 바꾸는 방법임.", [{
+            label: "String(123)",
+            value: String(123)
+        }, {
+            label: "(123).toString()",
+            value: (123).toString()
+        }]
+    );
+
+    addSection(
+        "5. 값 -> Boolean",
+        "Boolean은 true 또는 false로 바꾸는 것임.", [{
+            label: "Boolean(1)",
+            value: Boolean(1)
+        }, {
+            label: "Boolean(0)",
+            value: Boolean(0)
+        }, {
+            label: 'Boolean("hello")',
+            value: Boolean("hello")
+        }, {
+            label: 'Boolean("")',
+            value: Boolean("")
+        }, {
+            label: '!!"javascript"',
+            value: !!"javascript"
+        }]
+    );
+
+    addSection(
+        "6. 숫자 검사",
+        "숫자인지 아닌지 확인하는 함수임.", [{
+            label: 'isNaN("abc")',
+            value: isNaN("abc")
+        }, {
+            label: 'isNaN("12")',
+            value: isNaN("12")
+        }, {
+            label: "isFinite(100)",
+            value: isFinite(100)
+        }, {
+            label: "isFinite(Infinity)",
+            value: isFinite(Infinity)
+        }]
+    );
+
+    addSection(
+        "7. 핵심 정리",
+        "형변환은 자료형을 바꾸는 것임. 바꾼 뒤에는 결과 자료형도 같이 봐야 함.", [
+            `<code>parseInt</code> : 정수로 바꿈`,
+            `<code>parseFloat</code> : 실수로 바꿈`,
+            `<code>Number</code> : 숫자로 바꿈`,
+            `<code>String</code> : 문자열로 바꿈`,
+            `<code>Boolean</code> : true/false로 바꿈`
+        ]
+    );
+</script>
+
+
+</html>

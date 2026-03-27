@@ -1,0 +1,17 @@
+.multiplication-table {
+	margin: auto;
+	text-align: center;
+	border-collapse: collapse;
+	border: 2px solid red;
+}
+.multiplication-table th,
+.multiplication-table td {
+	width: 100px;
+	border: 1px solid black;
+	padding: 5px;
+	text-align: center;
+}
+.multiplication-table th {
+	background-color: pink;
+	color: white;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주사위 굴리기 예제</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background-color: #f4f6fb;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+        
+        .wrap {
+            width: min(100%, 420px);
+            margin: 0 auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        #dice {
+            margin: 20px 0;
+            font-size: 110px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: royalblue;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+    <script src="js/basic.js">
+        //여기에 코드를 작성해도 실행되지 않음
+    </script>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>주사위 굴리기</h1>
+        <p>버튼을 누르면 주사위가 잠깐 굴러가다가 1초 뒤 결과가 나옵니다.</p>
+
+        <!-- 주사위 모양이 보이는 영역 -->
+        <div id="dice">⚀</div>
+
+        <!-- 클릭하면 basic.js의 rollDice()가 실행됨 -->
+        <button onclick="rollDice()">주사위 굴리기</button>
+
+        <!-- 최종 결과를 보여주는 영역 -->
+        <p id="result">아직 결과가 없습니다.</p>
+    </div>
+</body>
+
+</html>

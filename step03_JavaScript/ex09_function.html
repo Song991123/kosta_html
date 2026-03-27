@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>함수 예제</title>
+		<style>
+			body {
+				margin: 0;
+				padding: 30px 20px;
+				background-color: #f6f8fc;
+				font-family: Arial, Helvetica, sans-serif;
+				color: #243041;
+			}
+
+			.wrap {
+				width: min(100%, 1080px);
+				margin: 0 auto;
+			}
+
+			.hero,
+			.card {
+				margin-bottom: 20px;
+				padding: 20px;
+				background-color: white;
+				border: 2px solid #dfe6f4;
+				border-radius: 18px;
+			}
+
+			h1,
+			h2,
+			h3,
+			p {
+				margin-top: 0;
+			}
+
+			.hero p,
+			.meta,
+			.when {
+				color: #5f6b7a;
+			}
+
+			.grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: 16px;
+			}
+
+			.badge {
+				display: inline-block;
+				padding: 4px 10px;
+				border-radius: 999px;
+				font-size: 12px;
+				font-weight: bold;
+			}
+
+			.kind-badge {
+				background-color: #e7f5ff;
+				color: #1864ab;
+			}
+
+			.type-badge {
+				background-color: #f3f0ff;
+				color: #6741d9;
+			}
+
+			.value-badge {
+				background-color: #e6fcf5;
+				color: #087f5b;
+			}
+
+			pre {
+				margin: 12px 0;
+				padding: 14px;
+				background-color: #111827;
+				color: #f9fafb;
+				border-radius: 12px;
+				overflow-x: auto;
+				font-size: 13px;
+				line-height: 1.6;
+			}
+
+			code {
+				font-family: Consolas, "Courier New", monospace;
+			}
+
+			.result-box {
+				padding: 12px;
+				background-color: #f8fafc;
+				border: 1px solid #e2e8f0;
+				border-radius: 12px;
+			}
+
+			.result-row {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px;
+				align-items: center;
+			}
+
+			.result-label {
+				font-weight: bold;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="hero">
+				<h1>함수(Function) 정리</h1>
+				<p>함수는 여러 줄의 일을 묶어 두는 도구임.</p>
+				<p>같은 작업을 다시 할 때 편함. 코드를 짧게 정리할 때도 좋음.</p>
+			</div>
+
+			<div id="result-area" class="grid"></div>
+		</div>
+		<script src="js/ex09_function.js"></script>
+	</body>
+</html>

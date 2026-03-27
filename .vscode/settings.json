@@ -1,16 +1,31 @@
 {
-  "terminal.integrated.profiles.windows": {
-    "PowerShell": {
-      "source": "PowerShell",
-      "args": [
-        "-NoExit",
-        "-Command",
-        "chcp 65001"
-      ]
-    }
-  },
-  "terminal.integrated.defaultProfile.windows": "PowerShell",
-  "emmet.variables": {
-    "lang": "ko"
-  }
+	"terminal.integrated.profiles.windows": {
+		"PowerShell": {
+			"source": "PowerShell",
+			"args": ["-NoExit", "-Command", "chcp 65001"]
+		}
+	},
+	"terminal.integrated.defaultProfile.windows": "PowerShell",
+	"emmet.variables": {
+		"lang": "ko"
+	},
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+
+	"editor.tabSize": 4,
+	"editor.insertSpaces": true,
+
+	"[html]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+
+	"prettier.tabWidth": 4,
+	"prettier.printWidth": 100,
+	"prettier.singleAttributePerLine": false,
+	"prettier.bracketSameLine": false,
+	"prettier.htmlWhitespaceSensitivity": "ignore"
 }

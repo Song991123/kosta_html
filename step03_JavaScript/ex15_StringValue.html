@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<form name="form">
+			ID : <input type="text" name="id" /><span id="idSpan"></span>
+			<p>age : <input type="text" name="age" /><span></span></p>
+			<p>email : <input type="text" name="email" /><span></span></p>
+			<p></p>
+
+			<fieldset>
+				<legend>주민번호</legend>
+				<input type="text" size="6" name="jumin1" /> -
+				<input type="text" size="7" name="jumin2" /><span></span>
+				<p>
+					성별 :
+					<input type="radio" name="gender" value="남자" />남자
+					<input type="radio" name="gender" value="여자" />여자
+				</p>
+			</fieldset>
+		</form>
+
+		<script>
+			// id에 영문만 가능 (blur 이벤트)
+			document.querySelector('input[name="id"]').addEventListener("focus", function () {
+				event.target.style.border = "double 5px red";
+				document.getElementById("idSpan").innerHTML = "";
+			});
+
+			document.querySelector('input[name="id"]').addEventListener("blur", function () {
+				event.target.style.border = "solid 1px gray";
+				// 허용 가능한 문자열 준비
+				var allowedChars = "abcdefghijklmnopqrstuvwxyz";
+
+				// id 박스에 있는 값 가져옴
+				var idValue = event.target.value;
+				// console.log(idValue);
+				for (let i = 0; i < idValue.length; i++) {
+					let ch = idValue.charAt(i);
+					// console.log(ch);
+					if (allowedChars.indexOf(ch.toLowerCase()) === -1) {
+						document.getElementById("idSpan").innerHTML =
+							"<strong style='color:red;'>영문만 입력 가능합니다.</strong>";
+						event.target.value = "";
+						return;
+					}
+				}
+			});
+			///////////////////////////
+			// 나이에 숫자 유무 체크
+			document.querySelector('input[name="age"]').addEventListener("blur", function () {
+				if (!numberCheck(event.target.value)) {
+					alert("숫자만 입력 가능합니다.");
+					event.target.value = "";
+				}
+			});
+
+			const numberCheck = (value) => {
+				if (isNaN(value)) {
+					// 메시지 출력(인접해 있는 span 태그에 메시지 출력)
+					return false;
+				}
+				return true;
+			};
+		</script>
+	</body>
+</html>

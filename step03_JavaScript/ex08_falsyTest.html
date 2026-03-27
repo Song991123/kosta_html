@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Falsy 값 테스트</title>
+		<style>
+			body {
+				margin: 0;
+				padding: 30px 20px;
+				background-color: #f6f8fc;
+				font-family: Arial, Helvetica, sans-serif;
+			}
+
+			.wrap {
+				width: min(100%, 980px);
+				margin: 0 auto;
+			}
+
+			.section {
+				margin-bottom: 18px;
+				padding: 18px;
+				background-color: white;
+				border: 2px solid #dfe6f4;
+				border-radius: 16px;
+			}
+
+			h1,
+			h2 {
+				margin-top: 0;
+			}
+
+			.desc {
+				color: #5f6b7a;
+			}
+
+			.section-desc {
+				margin-bottom: 12px;
+				color: #6b778c;
+				font-size: 14px;
+			}
+
+			.row {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 8px;
+				margin: 10px 0;
+			}
+
+			.expr {
+				font-weight: bold;
+				color: #334155;
+				min-width: 140px;
+			}
+
+			.badge {
+				display: inline-block;
+				padding: 4px 10px;
+				border-radius: 999px;
+				font-size: 13px;
+				font-weight: bold;
+			}
+
+			.value-badge {
+				background-color: #e7f5ff;
+				color: #1864ab;
+			}
+
+			.type-badge {
+				background-color: #f3f0ff;
+				color: #6741d9;
+			}
+
+			code {
+				padding: 2px 6px;
+				background-color: #eef2ff;
+				border-radius: 6px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wrap" id="app"></div>
+	</body>
+	<script>
+		/*
+		 * Falsy 값 테스트 예제
+		 * Falsy 값: false, 0, -0, "", null, undefined, NaN
+		 */
+
+		function formatValue(value) {
+			if (typeof value === "string") {
+				return value === "" ? '""' : `"${value}"`;
+			}
+
+			if (typeof value === "number" && Number.isNaN(value)) {
+				return "NaN";
+			}
+
+			if (value === null) {
+				return "null";
+			}
+
+			if (value === undefined) {
+				return "undefined";
+			}
+
+			return String(value);
+		}
+
+		function typeLabel(value) {
+			if (Number.isNaN(value)) {
+				return "number";
+			}
+
+			if (value === null) {
+				return "object";
+			}
+
+			return typeof value;
+		}
+
+		function writeSection(title, desc) {
+			document.write(`
+				<div class="section">
+					<h2>${title}</h2>
+					<p class="section-desc">${desc}</p>
+			`);
+		}
+
+		function writeRow(label, value) {
+			document.write(`
+				<div class="row">
+					<span class="expr">${label}</span>
+					<span class="badge value-badge">값: ${formatValue(value)}</span>
+					<span class="badge type-badge">type: ${typeLabel(value)}</span>
+				</div>
+			`);
+		}
+
+		function endSection() {
+			document.write(`</div>`);
+		}
+
+		document.write(`
+			<div class="wrap">
+				<h1>Falsy 값과 논리 연산자</h1>
+				<p class="desc">Falsy 값은 조건식에서 거짓처럼 동작하는 값임.</p>
+			</div>
+		`);
+
+		writeSection(
+			"1. Falsy 값 목록",
+			"아래 값들은 조건식에서 false처럼 동작함."
+		);
+		writeRow("false", false);
+		writeRow("0", 0);
+		writeRow("-0", -0);
+		writeRow('""', "");
+		writeRow("null", null);
+		writeRow("undefined", undefined);
+		writeRow("NaN", NaN);
+		endSection();
+
+		writeSection(
+			"2. A && B 테스트",
+			"A && B 는 앞이 거짓이면 앞값이 나옴. 앞이 참이면 뒷값이 나옴."
+		);
+		writeRow('0 && "hello"', 0 && "hello");
+		writeRow('"hi" && 123', "hi" && 123);
+		writeRow('null && "test"', null && "test");
+		writeRow('true && "javascript"', true && "javascript");
+		endSection();
+
+		writeSection(
+			"3. A || B 테스트",
+			"A || B 는 앞이 참이면 앞값이 나옴. 앞이 거짓이면 뒷값이 나옴."
+		);
+		writeRow('0 || "기본값"', 0 || "기본값");
+		writeRow('"hello" || "기본값"', "hello" || "기본값");
+		writeRow('undefined || 500', undefined || 500);
+		writeRow('false || true', false || true);
+		endSection();
+
+		writeSection(
+			"4. !A 테스트",
+			"!A 는 값을 true 또는 false로 뒤집는 연산자임."
+		);
+		writeRow("!0", !0);
+		writeRow('!""', !"");
+		writeRow('!"hello"', !"hello");
+		writeRow("!null", !null);
+		endSection();
+
+		writeSection(
+			"5. 핵심 정리",
+			"&&와 ||는 true, false만 주는 게 아님. 실제 값 자체를 돌려주기도 함."
+		);
+		document.write(`
+			<div class="row"><span class="expr"><code>A && B</code></span><span>앞이 거짓이면 앞값 반환함.</span></div>
+			<div class="row"><span class="expr"><code>A || B</code></span><span>앞이 참이면 앞값 반환함.</span></div>
+			<div class="row"><span class="expr"><code>!A</code></span><span>true/false로 바꿔서 반대로 뒤집음.</span></div>
+		`);
+		endSection();
+	</script>
+</html>

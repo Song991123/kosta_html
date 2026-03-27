@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>defer 와 async 예제</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 30px 16px;
+            background-color: #f4f6fb;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+        }
+
+        .wrap {
+            width: min(100%, 900px);
+            margin: 0 auto;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid #dde3f3;
+            border-radius: 16px;
+        }
+
+        .script-box {
+            margin-top: 14px;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .defer-box {
+            background-color: #e7f5ff;
+            color: #1864ab;
+        }
+
+        .async-box {
+            background-color: #fff3bf;
+            color: #e67700;
+        }
+
+        #log-list {
+            padding-left: 20px;
+        }
+
+        code {
+            padding: 2px 6px;
+            background-color: #eef2ff;
+            border-radius: 6px;
+        }
+    </style>
+
+    <!-- === 설명용 도우미 함수 === -->
+    <!-- 외부 스크립트가 먼저 실행되어도 메시지를 잠깐 저장했다가 나중에 화면에 보여주기 위한 코드 -->
+    <script>
+        window.waitingMessages = [];
+
+        function addMessage(text) {
+            const logList = document.getElementById("log-list");
+
+            if (logList) {
+                const li = document.createElement("li");
+                li.innerText = text;
+                logList.appendChild(li);
+            } else {
+                window.waitingMessages.push(text);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const status = document.getElementById("page-status");
+            const logList = document.getElementById("log-list");
+
+            status.innerText = "HTML 읽기 완료! 이제 화면에 있는 요소들을 안전하게 사용할 수 있어요.";
+
+            for (let i = 0; i < window.waitingMessages.length; i++) {
+                const li = document.createElement("li");
+                li.innerText = window.waitingMessages[i];
+                logList.appendChild(li);
+            }
+        });
+    </script>
+
+    <!-- === async 예제 === -->
+    <!-- async는 파일을 받으면 바로 실행하려고 함 -->
+    <!-- 그래서 HTML을 다 읽기 전에 실행될 수도 있음 -->
+    <script src="js/test_async.js" async></script>
+
+    <!-- === defer 예제 === -->
+    <!-- defer는 HTML을 끝까지 읽고 나서 실행됨 -->
+    <script src="js/test.js" defer></script>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="card">
+            <h1>defer 와 async 아주 쉬운 예제</h1>
+            <p>
+                초등학생 버전으로 생각하면,
+                <strong>HTML은 책 읽기</strong>,
+                <strong>JavaScript는 심부름</strong>이라고 볼 수 있어요.
+            </p>
+            <p>
+                <code>defer</code>는 "책을 끝까지 읽고 심부름해!"에 가깝고,
+                <code>async</code>는 "준비되면 바로 심부름해!"에 가깝습니다.
+            </p>
+            <p id="page-status">아직 HTML을 읽는 중이에요...</p>
+        </div>
+
+        <div class="card">
+            <h2>1. defer 예제</h2>
+            <p>
+                <code>defer</code>는 HTML을 다 읽은 뒤 실행되기 때문에
+                아래 요소를 찾을 때 더 안전합니다.
+            </p>
+            <div id="defer-box" class="script-box defer-box">
+                아직 defer 스크립트가 실행되지 않았어요.
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>2. async 예제</h2>
+            <p>
+                <code>async</code>는 파일 준비가 끝나면 바로 실행하려고 해서,
+                실행 순서가 일정하지 않을 수 있어요.
+            </p>
+            <div id="async-box" class="script-box async-box">
+                아직 async 스크립트가 실행되지 않았어요.
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>3. 실행 기록</h2>
+            <p>아래 목록을 보면 어떤 스크립트가 언제 움직였는지 확인할 수 있어요.</p>
+            <ol id="log-list"></ol>
+        </div>
+    </div>
+</body>
+
+</html>

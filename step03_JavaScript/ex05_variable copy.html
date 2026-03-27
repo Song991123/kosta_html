@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 30px 20px;
+        }
+
+        .wrap {
+            width: min(100%, 900px);
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 18px;
+            padding: 18px;
+            background-color: white;
+            border: 2px solid #e3e8f5;
+            border-radius: 14px;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        p {
+            color: #a1db8a;
+            margin: 6px 0;
+        }
+
+        .a {
+            color: #f08a5d;
+        }
+
+        .desc {
+            color: #5f6b7a;
+            margin-bottom: 10px;
+        }
+
+        .section-desc {
+            color: #637083;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>변수 (Variable)</h1>
+        <p class="desc">아래 결과는 "무슨 테스트인지" 보이도록 항목별로 나누어 출력한 예제입니다.</p>
+
+        <!-- 자바스크립트 결과가 이 영역 아래에 추가됨 -->
+        <div id="result-area"></div>
+    </div>
+
+    <script>
+        /*
+        변수 선언
+        var 변수이름;
+        var 변수이름 = 값;
+        */
+
+        // 결과를 모아 둘 HTML 영역
+        const resultArea = document.getElementById("result-area");
+
+        // 큰 항목 박스를 만드는 함수
+        function addSection(title, desc, lines, className = "") {
+            const section = document.createElement("div");
+            section.className = "section";
+
+            const heading = document.createElement("h2");
+            heading.innerText = title;
+            section.appendChild(heading);
+
+            const descText = document.createElement("p");
+            descText.className = "section-desc";
+            descText.innerText = desc;
+            section.appendChild(descText);
+
+            for (let i = 0; i < lines.length; i++) {
+                const p = document.createElement("p");
+                p.innerHTML = lines[i];
+
+                if (className) {
+                    p.classList.add(className);
+                }
+
+                section.appendChild(p);
+            }
+
+            resultArea.appendChild(section);
+        }
+
+        // === 1. 변수 선언 테스트 ===
+        var a;
+        var b = 10;
+        c = 3.14;
+
+        addSection("1. 변수 선언 테스트", "선언만 하면 값이 없어서 undefined가 나옴. typeof는 자료형을 보여줌.", [
+            "a : " + a + ", " + typeof (a),
+            "b : " + b + ", " + typeof (b),
+            "c : " + c + ", " + typeof (c)
+        ]);
+
+        // === 2. 변수 값 변경 테스트 ===
+        a = "Hello";
+
+        addSection("2. 변수 값 변경 테스트", "재할당 예제임. 같은 변수 a에 새 값을 다시 넣었음.", [
+            "a : " + a + ", " + typeof (a)
+        ], "a");
+
+        // === 3. var 중복 선언 테스트 ===
+        var a = "World";
+
+        addSection("3. var 중복 선언 테스트", "var는 같은 이름으로 재선언 가능함. 마지막 값이 적용됐음.", [
+            "a : " + a + ", " + typeof (a)
+        ]);
+
+        // let, const 키워드로 선언한 변수는 같은 이름으로 여러 번 선언할 수 없음.
+        // let a = "Hello"; // SyntaxError: Identifier 'a' has already been declared
+        // const a = "Hello"; // SyntaxError: Identifier 'a' has already been declared
+
+        // === 4. 함수 호출 테스트 ===
+        function test() {
+            addSection("4. 함수 호출 테스트", "함수를 호출하면 함수 안의 코드가 실행됨.", [
+                "test 함수 호출됨"
+            ]);
+        }
+        test();
+
+        // === 5. 함수 중복 선언 테스트 ===
+        function test() {
+            addSection("5. 함수 중복 선언 테스트", "같은 이름의 함수가 다시 선언되면, 나중 함수가 앞 함수를 덮어씀.", [
+                "중복된 test 함수 호출됨"
+            ]);
+        }
+        test();
+
+        // === 6. scope(범위) 테스트 ===
+        var x = 10; // 전역 변수
+        function scopeTest() {
+            var x = 20; // 지역 변수 (전역 변수 x와는 다른 변수)
+            var y = 20; // 지역 변수
+
+            addSection("6-1. 함수 안쪽 scope 테스트", "함수 안의 x와 y는 지역 변수임. 함수 안에서만 사용 가능함.", [
+                "x : " + x + ", y : " + y
+            ]);
+        }
+
+        scopeTest();
+
+        addSection("6-2. 함수 바깥쪽 scope 테스트", "함수 밖에서는 전역 변수 x만 보임. 지역 변수 y는 보이지 않음.", [
+            "x : " + x + ", y : " + typeof (y)
+        ]);
+    </script>
+</body>
+
+</html>

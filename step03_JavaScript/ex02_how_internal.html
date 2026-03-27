@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .active-title {
+            background-color: teal;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            letter-spacing: 3px;
+        }
+
+        .highlight-title {
+            color: royalblue;
+            border-bottom: 3px dashed royalblue;
+        }
+
+        .clicked-title {
+            background-color: tomato;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+
+<body>
+    <h2 id="main-title" onclick="test()">테스트 버튼</h2>
+    <h2 class="sub-title">첫 번째 h2</h2>
+    <h2 class="sub-title">두 번째 h2</h2>
+    <p id="result">테스트용 문서</p>
+
+    <hr>
+
+    <h2 onclick="test2(this)">this로 전달하는 h2 예제 1</h2>
+    <h2 onclick="test2(this)">this로 전달하는 h2 예제 2</h2>
+    <p id="result2">아래 h2를 클릭하면 클릭한 요소만 바뀝니다.</p>
+</body>
+<script>
+    console.log("자바스크립트는 HTML 문서의 구조와 스타일이 완성된 후에 실행됨.");
+
+    document.write("자바스크립트로 HTML 문서에 내용을 추가할 수 있음.");
+
+    function test() {
+        // alert() 함수는 사용자에게 메시지를 보여주는 함수
+        // window.alert()로도 사용할 수 있지만, window 객체는 생략 가능
+        // alert("함수 test가 실행됨.");
+        const mainTitle = document.getElementById("main-title");
+        const subTitles = document.querySelectorAll(".sub-title");
+        const result = document.getElementById("result");
+
+        // 1. h2의 글자 내용 변경
+        mainTitle.innerText = "클릭 후 바뀐 메인 h2";
+
+        // 2. class 추가로 한 번에 스타일 변경
+        mainTitle.classList.add("active-title");
+
+        // 3. 속성 추가
+        mainTitle.setAttribute("title", "자바스크립트로 h2 속성도 변경 가능");
+
+        // 4. 다른 h2들도 각각 조작 가능
+        subTitles[0].innerText = "첫 번째 h2 텍스트 변경";
+        subTitles[0].classList.add("highlight-title");
+
+        // 5. HTML 태그까지 넣어서 변경 가능
+        subTitles[1].innerHTML = "<span style='color:tomato;'>두 번째 h2 HTML 변경</span>";
+        subTitles[1].style.backgroundColor = "beige";
+        subTitles[1].style.padding = "10px";
+
+        // 6. 결과 안내 문구 출력
+        result.innerHTML = "h2 조작 예제: 텍스트 변경, class 추가, 속성 변경, HTML 삽입, 배경색과 padding 변경";
+    }
+
+    function test2(target) {
+        const result2 = document.getElementById("result2");
+
+        // this로 전달된 현재 h2 요소 자체를 바로 조작
+        target.innerText = "클릭한 h2만 변경됨";
+        target.classList.add("clicked-title");
+        target.style.border = "3px solid darkred";
+        target.setAttribute("title", "this로 전달받은 현재 h2");
+
+        result2.innerText = "test2(this): 클릭한 h2 요소만 직접 전달받아 변경했다.";
+    }
+</script>
+
+</html>

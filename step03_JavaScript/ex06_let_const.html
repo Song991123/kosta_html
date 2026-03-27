@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 30px 20px;
+        }
+        
+        .wrap {
+            width: min(100%, 900px);
+            margin: 0 auto;
+        }
+        
+        .section {
+            margin-bottom: 18px;
+            padding: 18px;
+            background-color: white;
+            border: 2px solid #e3e8f5;
+            border-radius: 14px;
+        }
+        
+        h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+        
+        p {
+            color: #a1db8a;
+            margin: 6px 0;
+        }
+        
+        .a {
+            color: #f08a5d;
+        }
+        
+        .desc {
+            color: #5f6b7a;
+            margin-bottom: 10px;
+        }
+        
+        .section-desc {
+            color: #637083;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>let 예제</h1>
+        <p class="desc">아래 결과는 let의 특징을 항목별로 나누어 보여주는 예제입니다.</p>
+
+        <!-- 자바스크립트 결과가 이 영역 아래에 추가됨 -->
+        <div id="result-area"></div>
+    </div>
+
+    <script>
+        /*
+                let 선언
+                let 변수이름;
+                let 변수이름 = 값;
+                */
+
+        // 결과를 모아 둘 HTML 영역
+        const resultArea = document.getElementById("result-area");
+
+        // 큰 항목 박스를 만드는 함수
+        function addSection(title, desc, lines, className = "") {
+            const section = document.createElement("div");
+            section.className = "section";
+
+            const heading = document.createElement("h2");
+            heading.innerText = title;
+            section.appendChild(heading);
+
+            const descText = document.createElement("p");
+            descText.className = "section-desc";
+            descText.innerText = desc;
+            section.appendChild(descText);
+
+            for (let i = 0; i < lines.length; i++) {
+                const p = document.createElement("p");
+                p.innerHTML = lines[i];
+
+                if (className) {
+                    p.classList.add(className);
+                }
+
+                section.appendChild(p);
+            }
+
+            resultArea.appendChild(section);
+        }
+
+        // === 1. let 선언 테스트 ===
+        let a;
+        let b = 10;
+        let c = 3.14;
+
+        addSection("1. let 선언 테스트", "let으로 선언 가능함. 값을 안 넣으면 undefined가 나옴.", [
+            "a : " + a + ", " + typeof(a),
+            "b : " + b + ", " + typeof(b),
+            "c : " + c + ", " + typeof(c)
+        ]);
+
+        // === 2. let 재할당 테스트 ===
+        a = "Hello";
+
+        addSection("2. let 재할당 테스트", "let은 재할당 가능함. 이미 만든 변수에 새 값을 넣을 수 있음.", [
+            "a : " + a + ", " + typeof(a)
+        ], "a");
+
+        // === 3. let 재선언 불가 테스트 ===
+        addSection("3. let 재선언 불가 테스트", "let은 같은 이름으로 다시 선언할 수 없음. 실행하면 오류가 남.", [
+            "예시 코드 : let a = 'World';",
+            "결과 : Identifier 'a' has already been declared"
+        ]);
+
+        // === 4. let 블록 안 scope 테스트 ===
+        let x = 10;
+
+        {
+            let x = 20;
+            let y = 30;
+
+            addSection("4. let 블록 안 scope 테스트", "중괄호 안에서 만든 let 변수는 블록 내부에서만 사용 가능함.", [
+                "블록 안 x : " + x,
+                "블록 안 y : " + y
+            ]);
+        }
+
+        // === 5. let 블록 바깥 scope 테스트 ===
+        addSection("5. let 블록 바깥 scope 테스트", "블록 밖에서는 바깥 let 변수만 보임. 안쪽 y는 접근 불가함.", [
+            "블록 밖 x : " + x,
+            "블록 밖 y : 접근 불가"
+        ]);
+
+        // === 6. let 반복문 scope 테스트 ===
+        for (let i = 1; i <= 3; i++) {
+            addSection("6. let 반복문 scope 테스트", "for문 안의 let i는 반복문 안에서만 의미가 있음.", [
+                "현재 i 값 : " + i
+            ]);
+            break;
+        }
+
+        addSection("7. let 정리", "let의 핵심은 재할당 가능, 재선언 불가, 블록 scope 적용임.", [
+            "정리 완료"
+        ]);
+    </script>
+</body>
+
+</html>
